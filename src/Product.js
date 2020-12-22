@@ -1,7 +1,24 @@
 import React from "react";
 import "./Product.css";
+import { useStateValue } from "./StateProvider";
 
-function Product({ title, image, price, rating }) {
+function Product({ id, title, image, price, rating }) {
+    const [{ basket }, dispatch] = useStateValue();
+    console.log("The is the basket >>>>>>", basket);
+    const addToBasket = () => {
+        // dispatch the items into the data layer
+        dispatch({
+            type: "ADD_TO_BASKET",
+            item: {
+                id: id,
+                title: title,
+                image: image,
+                price: price,
+                rating: rating,
+            },
+        });
+    };
+
     return (
         <div className="product">
             <div className="product__info">
@@ -20,7 +37,7 @@ function Product({ title, image, price, rating }) {
             </div>
             <img src={image} alt="hello world"></img>
             {/* <img src="https://www.junglescout.com/wp-content/uploads/2020/03/Screen-Shot-2020-05-15-at-1.00.40-PM.png" alt="hello world"></img> */}
-            <button>Add to Basket</button>
+            <button onClick={addToBasket}>Add to Basket</button>
         </div>
     );
 }
