@@ -1,18 +1,38 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { auth } from "./firebase";
 
 function Login() {
-    const { email, setEmail } = useState("");
-    const { password, setPassword } = useState("");
+    const history = useHistory();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const sighIn = (e) => {
         e.preventDefault();
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then((auth) => {
+                if (auth) {
+                    history.push("/");
+                }
+            })
+            .catch((error) => alert(error.messages));
 
         // here is some Fancy firebase login work
     };
     const register = (e) => {
         e.preventDefault();
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((auth) => {
+                // it is success create a user with eamil and passwaord
+                // console.log(auth);
+                if (auth) {
+                    history.push("/");
+                }
+            })
+            .catch((error) => alert(error.messages));
 
         // here is some Fancy firebase signUp work
     };
